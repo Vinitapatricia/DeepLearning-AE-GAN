@@ -1,0 +1,4 @@
+﻿.venv/
+outputs/checkpoints/
+data/
+__pycache__/
