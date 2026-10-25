@@ -2,12 +2,12 @@ import torch
 import torch.nn as nn
 from src.config import set_seed, DEVICE
 from src.data import get_loader
-from src.models.mlp import MLPClassifier
+from src.models.mlp import MLP
 
 def main(epochs=20, lr=1e-3):
     set_seed()
     train_data, val_data, test_data = get_loader()
-    model = MLPClassifier().to(DEVICE)
+    model = MLP().to(DEVICE)
     optimizer = torch.optim.Adam(model.parameters(), lr=lr)
     cross_en = nn.CrossEntropyLoss()
     best_val = 0.0
