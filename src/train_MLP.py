@@ -5,6 +5,7 @@ from src.data import get_loader
 from src.models.mlp import MLP
 
 def main(epochs=20, lr=1e-3):
+    os.makedirs("outputs/checkpoints", exist_ok=True)
     set_seed()
     train_data, val_data, test_data = get_loader()
     model = MLP().to(DEVICE)
