@@ -3,6 +3,7 @@ import torch.nn as nn
 from src.config import set_seed, DEVICE
 from src.data import get_loader
 from src.models.mlp import MLP
+import os
 
 def main(epochs=20, lr=1e-3):
     os.makedirs("outputs/checkpoints", exist_ok=True)
