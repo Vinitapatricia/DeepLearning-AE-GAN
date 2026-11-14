@@ -7,7 +7,7 @@ from torchvision.utils import make_grid
 from src.config import set_seed, DEVICE, BATCH_SIZE
 from src.data import get_loader
 from src.models.mlp import MLP, MLPDecoder
-from src.eval.metrics import reconstruction_metrics
+from src.eval.metrics import bikin_metrics
 
 def extract(classifier, loader):
     with torch.no_grad():
@@ -50,7 +50,7 @@ def main():
     x_cls = torch.sigmoid(h1_hat @ W1).view(10, 1, 28, 28)
 
     x_lat_all = torch.sigmoid(torch.nn.functional.relu(Z_test @ W2) @ W1).view(-1, 1, 28, 28)
-    results["tahap3_latent_transpose"] = reconstruction_metrics(X_test, x_lat_all)
+    results["tahap3_latent_transpose"] = bikin_metrics(X_test, x_lat_all)
 
     decoder = MLPDecoder(64).to(DEVICE)
     optimizer = torch.optim.Adam(decoder.parameters(), lr=1e-3)
@@ -70,7 +70,7 @@ def main():
     with torch.no_grad():
         rec_te = decoder(Z_test.to(DEVICE)).cpu()
 
-    results["tahap4_frozen_decoder_zMLP"] = reconstruction_metrics(X_test, rec_te)
+    results["tahap4_frozen_decoder_zMLP"] = bikin_metrics(X_test, rec_te)
     torch.save(decoder.state_dict(), "outputs/checkpoints/mlp_frozen_decoder.pt")
 
 
