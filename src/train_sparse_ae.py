@@ -1,11 +1,13 @@
 import os, json, time
+import sys
 import torch
 import torch.nn as nn
 from src.config import set_seed, DEVICE
 from src.data import get_loader
 from src.models.sparseAE import SparseAE
 
-LAMBDA_SPARSE = 1e-3
+LAMBDA_SPARSE = float(sys.argv[1]) if len(sys.argv) > 1 else 1e-3
+tag = f"{LAMBDA_SPARSE:g}"
 
 def main(epochs=20, lr=1e-3):
     os.makedirs("outputs/checkpoints", exist_ok=True)
@@ -58,9 +60,9 @@ def main(epochs=20, lr=1e-3):
         
         if val_loss < best_val:
             best_val = val_loss
-            torch.save(model.state_dict(), "outputs/checkpoints/sparse_ae.pt")
+            torch.save(model.state_dict(), f"outputs/checkpoints/sparse_ae_{tag}.pt")
 
-    json.dump({"loss": train_losses, "epoch_time": times}, open("outputs/loss_sparseAE.json", "w"))
+    json.dump({"loss": train_losses, "epoch_time": times}, open(f"outputs/loss_sparseAE_{tag}.json", "w"))
 
 if __name__ == "__main__":
     main()
