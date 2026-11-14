@@ -48,14 +48,17 @@ def main(epochs=20, lr=1e-3):
         with torch.no_grad():
             for x, _ in val_data:
                 x= x.to(DEVICE)
-                correct += nn.functional.mse_loss(model(x), x).item() * x.size(0)
+                x_hat, mu, logvar = model(x)
+                bce = nn.functional.binary_cross_entropy(x_hat, x, reduction="sum") / x.size(0)
+                kl = -0.5 * torch.sum(1 + logvar - mu.pow(2) - logvar.exp()) / x.size(0)
+                correct += (bce + kl).item() * x.size(0)
                 total += x.size(0)
-            val_acc = correct / total
+            val_loss = correct / total
 
-        print(f"epoch {i+1}: loss {loss.item()} | val acc {val_acc} | {times[-1]:.2f}s")
+        print(f"epoch {i+1}: loss {train_losses[-1]} | val acc {val_loss} | {times[-1]:.2f}s")
         
-        if val_acc > best_val:
-            best_val = val_acc
+        if val_loss < best_val:
+            best_val = val_loss
             torch.save(model.state_dict(), "outputs/checkpoints/vae.pt")
 
     json.dump({"loss": train_losses, "epoch_time": times}, open("outputs/loss_vae.json", "w"))

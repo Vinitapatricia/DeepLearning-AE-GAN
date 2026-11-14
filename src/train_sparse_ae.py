@@ -48,14 +48,16 @@ def main(epochs=20, lr=1e-3):
         with torch.no_grad():
             for x, _ in val_data:
                 x= x.to(DEVICE)
-                correct += nn.functional.mse_loss(model(x), x).item() * x.size(0)
+                x_hat, h = model(x)
+                loss_val = nn.functional.mse_loss(x_hat, x) + LAMBDA_SPARSE * h.abs().mean(0).sum()
+                correct += loss_val.item() * x.size(0)
                 total += x.size(0)
-            val_acc = correct / total
+            val_loss = correct / total
 
-        print(f"epoch {i+1}: loss {loss.item()} | val acc {val_acc} | {times[-1]:.2f}s")
+        print(f"epoch {i+1}: loss {train_losses[-1]} | val loss {val_loss} | {times[-1]:.2f}s")
         
-        if val_acc > best_val:
-            best_val = val_acc
+        if val_loss < best_val:
+            best_val = val_loss
             torch.save(model.state_dict(), "outputs/checkpoints/sparse_ae.pt")
 
     json.dump({"loss": train_losses, "epoch_time": times}, open("outputs/loss_sparseAE.json", "w"))
