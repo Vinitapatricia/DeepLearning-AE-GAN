@@ -13,7 +13,7 @@ def main(epochs=20, lr=1e-3):
     train_data, val_data, test_data = get_loader()
     model = SparseAE().to(DEVICE)
     optimizer = torch.optim.Adam(model.parameters(), lr=lr)
-    best_val = 0.0
+    best_val = float("inf")
     train_losses = []
     times = []
 

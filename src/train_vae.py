@@ -11,7 +11,7 @@ def main(epochs=20, lr=1e-3):
     train_data, val_data, test_data = get_loader()
     model = VAE().to(DEVICE)
     optimizer = torch.optim.Adam(model.parameters(), lr=lr)
-    best_val = 0.0
+    best_val = float("inf")
     train_losses = []
     times = []
 
@@ -55,7 +55,7 @@ def main(epochs=20, lr=1e-3):
                 total += x.size(0)
             val_loss = correct / total
 
-        print(f"epoch {i+1}: loss {train_losses[-1]} | val acc {val_loss} | {times[-1]:.2f}s")
+        print(f"epoch {i+1}: loss {train_losses[-1]} | val loss {val_loss} | {times[-1]:.2f}s")
         
         if val_loss < best_val:
             best_val = val_loss
