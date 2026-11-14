@@ -33,9 +33,9 @@ def main():
     for p in classifier.parameters():
         p.requires_grad = False
 
-    W1 = classifier.fc1.weight.cpu()
-    W2 = classifier.fc2.weight.cpu()
-    W3 = classifier.fc3.weight.cpu()
+    W1 = classifier.network[1].weight.cpu()
+    W2 = classifier.network[3].weight.cpu()
+    W3 = classifier.network[5].weight.cpu()
     X_train, Z_train = extract(classifier, train_dataset)
     X_test, Z_test =extract(classifier, test_dataset)
     results = {}
