@@ -5,6 +5,7 @@ import torch
 SEED = 42
 BATCH_SIZE = 128
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+NOISE_DIM = 100
 
 def set_seed(seed=SEED):
     random.seed(seed)
