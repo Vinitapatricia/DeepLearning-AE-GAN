@@ -32,6 +32,9 @@ def main(epochs=20, lr=1e-3, T= 1000):
 
             opt.step()
 
+            run += loss.item() * x.size(0)
+            n += x.size(0)
+
         if DEVICE.type == "cuda":
             torch.cuda.synchronize()
         times.append(time.time() - t0)
