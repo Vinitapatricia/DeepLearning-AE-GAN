@@ -78,7 +78,7 @@ def main():
         "DCGAN": lambda b: (dc_G(torch.randn(b, NOISE_DIM, device=DEVICE)) + 1) / 2,
         "DDPM": lambda b: (diff.sample(unet, b, DEVICE) + 1) / 2,
     }
-    n_fid = {"VAE": N_FID, "Vanilla GAN": N_FID, "DCGAN": N_FID, "DDPM": 2000}
+    n_fid = {"VAE": N_FID, "Vanilla GAN": N_FID, "DCGAN": N_FID, "DDPM": N_FID}
 
     for name, fn in gens.items():
         print("FID", name)
