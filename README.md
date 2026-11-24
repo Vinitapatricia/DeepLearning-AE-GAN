@@ -42,7 +42,7 @@ Semua perintah di bawah dijalankan dari **folder root repositori**.
 Urutan yang disarankan:
 
 ```bash
-# 1. Latih semua model (checkpoint tersimpan di outputs/checkpoints, kurva loss di outputs/loss_*.json)
+# 1. Latih semua model
 python -m src.train_MLP
 python -m src.train_vanilla_ae
 python -m src.train_sparse_ae 1e-5 # argumen = koefisien sparsity λ
@@ -55,10 +55,7 @@ python -m src.train_ddpm
 python -m src.exp_mlp_limits
 
 # 3. Evaluasi gabungan -> outputs/metrics_all.json
-python -m src.eval.run_eval
-
-# 4. Figur -> outputs/figures/
-python -m src.make_figures
+python -m src.eval.eval
 ```
 
 Catatan:
