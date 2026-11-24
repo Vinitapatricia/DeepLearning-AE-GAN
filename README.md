@@ -56,11 +56,10 @@ python -m src.exp_mlp_limits
 
 # 3. Evaluasi gabungan -> outputs/metrics_all.json
 python -m src.eval.eval
-```
 
-Catatan:
-- Evaluasi DDPM paling lama (sampling 1000 langkah, FID dengan 5000 sampel butuh sekitar 20 menit di GPU Colab).
-- Semua training memakai Adam, 20 epoch, batch size 128, seed 42. Learning rate 1e-3 untuk semua model; GAN dan DCGAN memakai β = (0,5; 0,999).
+# 4. Figur -> outputs/figures/
+python -m src.figures
+```
 
 ## Hasil
 
